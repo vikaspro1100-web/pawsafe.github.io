@@ -1,632 +1,1593 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>PetSafe | Smart Pet Identification</title>
-
-    <!-- QR Code Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-    <style>
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        body {
-            background: #f5f8f7;
-            color: #17221f;
-        }
-
-        /* NAVBAR */
-
-        nav {
-            background: white;
-            padding: 18px 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.06);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 800;
-        }
-
-        .logo span {
-            color: #18a875;
-        }
-
-        nav button {
-            border: none;
-            background: #18a875;
-            color: white;
-            padding: 10px 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* HERO */
-
-        .hero {
-            min-height: 430px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 60px 8%;
-            gap: 40px;
-            background: linear-gradient(135deg, #eafff5, #f5fbff);
-        }
-
-        .hero-text {
-            max-width: 600px;
-        }
-
-        .badge {
-            display: inline-block;
-            background: #d5f8e9;
-            color: #08734c;
-            padding: 8px 15px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: bold;
-            margin-bottom: 18px;
-        }
-
-        .hero h1 {
-            font-size: 52px;
-            line-height: 1.05;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 span {
-            color: #18a875;
-        }
-
-        .hero p {
-            color: #52615c;
-            font-size: 17px;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-
-        .hero-btn {
-            display: inline-block;
-            background: #18a875;
-            color: white;
-            text-decoration: none;
-            padding: 14px 25px;
-            border-radius: 12px;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .hero-btn.secondary {
-            background: white;
-            color: #18a875;
-            border: 1px solid #18a875;
-        }
-
-        .pet-icon {
-            width: 260px;
-            height: 260px;
-            border-radius: 50%;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 130px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
-        }
-
-        /* SECTIONS */
-
-        section {
-            padding: 60px 8%;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .section-title h2 {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-
-        .section-title p {
-            color: #68746f;
-        }
-
-        /* PET CARD */
-
-        .pet-card {
-            max-width: 900px;
-            margin: auto;
-            background: white;
-            border-radius: 25px;
-            padding: 30px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.07);
-        }
-
-        .pet-top {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .pet-photo {
-            width: 130px;
-            height: 130px;
-            border-radius: 20px;
-            background: #e8f8f1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 70px;
-        }
-
-        .pet-info h2 {
-            font-size: 30px;
-            margin-bottom: 8px;
-        }
-
-        .pet-info p {
-            color: #68746f;
-            margin: 5px 0;
-        }
-
-        .verified {
-            display: inline-block;
-            background: #e1f8ed;
-            color: #118156;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-top: 8px;
-        }
-
-        /* INFORMATION GRID */
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .info-box {
-            background: #f7faf9;
-            border-radius: 15px;
-            padding: 18px;
-        }
-
-        .info-box small {
-            color: #78847f;
-            display: block;
-            margin-bottom: 6px;
-        }
-
-        .info-box strong {
-            font-size: 17px;
-        }
-
-        /* LOCATION */
-
-        .location-card {
-            max-width: 900px;
-            margin: auto;
-            background: #17221f;
-            color: white;
-            border-radius: 25px;
-            padding: 30px;
-        }
-
-        .location-card h3 {
-            font-size: 25px;
-            margin-bottom: 10px;
-        }
-
-        .location-card p {
-            color: #cbd6d2;
-            line-height: 1.6;
-        }
-
-        .location-display {
-            background: rgba(255,255,255,0.08);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .location-display strong {
-            font-size: 18px;
-        }
-
-        .location-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .location-buttons button,
-        .hospital-btn {
-            border: none;
-            padding: 12px 18px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .primary {
-            background: #18a875;
-            color: white;
-        }
-
-        .light {
-            background: white;
-            color: #17221f;
-        }
-
-        /* HOSPITALS */
-
-        .hospital-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            max-width: 1000px;
-            margin: auto;
-        }
-
-        .hospital {
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-        }
-
-        .hospital-icon {
-            font-size: 35px;
-            margin-bottom: 12px;
-        }
-
-        .hospital h3 {
-            margin-bottom: 8px;
-        }
-
-        .hospital p {
-            color: #69756f;
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 15px;
-        }
-
-        .hospital-btn {
-            background: #e5f8f0;
-            color: #08734c;
-            width: 100%;
-        }
-
-        /* QR */
-
-        .qr-section {
-            background: #eafff5;
-        }
-
-        .qr-container {
-            max-width: 900px;
-            margin: auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .qr-card {
-            background: white;
-            padding: 30px;
-            border-radius: 25px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-        }
-
-        #qrcode {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-        }
-
-        .qr-card button {
-            background: #18a875;
-            border: none;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .qr-explanation h2 {
-            font-size: 32px;
-            margin-bottom: 15px;
-        }
-
-        .qr-explanation p {
-            color: #5d6964;
-            line-height: 1.7;
-        }
-
-        /* OWNER */
-
-        .owner-card {
-            max-width: 900px;
-            margin: auto;
-            background: white;
-            border-radius: 25px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-        }
-
-        .owner-card h2 {
-            margin-bottom: 20px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        input,
-        textarea {
-            width: 100%;
-            padding: 13px;
-            border: 1px solid #dbe4df;
-            border-radius: 10px;
-            outline: none;
-            margin-top: 6px;
-        }
-
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        label {
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .full {
-            grid-column: 1 / -1;
-        }
-
-        .save-btn {
-            margin-top: 20px;
-            border: none;
-            background: #18a875;
-            color: white;
-            padding: 14px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* HOW IT WORKS */
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            max-width: 1000px;
-            margin: auto;
-        }
-
-        .step {
-            text-align: center;
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 7px 25px rgba(0,0,0,0.05);
-        }
-
-        .step-number {
-            width: 50px;
-            height: 50px;
-            background: #18a875;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .step p {
-            color: #69756f;
-            line-height: 1.5;
-            margin-top: 8px;
-        }
-
-        /* FOOTER */
-
-        footer {
-            background: #17221f;
-            color: white;
-            text-align: center;
-            padding: 30px;
-        }
-
-        footer p {
-            color: #b9c6c1;
-            margin-top: 8px;
-        }
-
-        /* RESPONSIVE */
-
-        @media(max-width: 750px) {
-
-            .hero {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .hero h1 {
-                font-size: 38px;
-            }
-
-            .pet-icon {
-                width: 190px;
-                height: 190px;
-                font-size: 90px;
-            }
-
-            .info-grid,
-            .form-grid,
-            .qr-container {
-                grid-template-columns: 1fr;
-            }
-
-            .hospital-grid,
-            .steps {
-                grid-template-columns: 1fr;
-            }
-
-            .pet-top {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PAWSAFE — Smart Pet Recovery</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+
+/* =========================
+   RESET
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:#f7f9f8;
+    color:#15201c;
+    overflow-x:hidden;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+button{
+    font-family:inherit;
+}
+
+
+/* =========================
+   VARIABLES
+========================= */
+
+:root{
+    --green:#19a974;
+    --dark:#10201a;
+    --light:#e9fff5;
+    --text:#15201c;
+    --muted:#718079;
+    --white:#ffffff;
+    --border:#e5ebe8;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:76px;
+    padding:0 7%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:rgba(255,255,255,.82);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(0,0,0,.05);
+    z-index:1000;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:-1px;
+}
+
+.logo-icon{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    background:var(--dark);
+    display:grid;
+    place-items:center;
+    color:white;
+    font-size:20px;
+}
+
+.logo span{
+    color:var(--green);
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:30px;
+}
+
+.nav-links a{
+    font-size:14px;
+    font-weight:600;
+    color:#56645e;
+    transition:.25s;
+}
+
+.nav-links a:hover{
+    color:var(--green);
+}
+
+.nav-button{
+    border:0;
+    background:var(--dark);
+    color:white;
+    padding:11px 19px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.25s;
+}
+
+.nav-button:hover{
+    transform:translateY(-2px);
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    min-height:760px;
+    padding:150px 7% 90px;
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    align-items:center;
+    gap:60px;
+    position:relative;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 85% 25%,#caffea 0,transparent 28%),
+        radial-gradient(circle at 10% 70%,#e4fff4 0,transparent 30%),
+        #f8fbfa;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    width:450px;
+    height:450px;
+    border:1px solid rgba(25,169,116,.12);
+    border-radius:50%;
+    right:-130px;
+    top:-100px;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+}
+
+.pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 14px;
+    border-radius:30px;
+    background:#e1fff1;
+    color:#08734e;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.5px;
+    margin-bottom:24px;
+}
+
+.pill-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 0 5px rgba(25,169,116,.1);
+}
+
+.hero h1{
+    font-size:clamp(48px,6vw,78px);
+    line-height:.98;
+    letter-spacing:-4px;
+    max-width:700px;
+    margin-bottom:26px;
+}
+
+.hero h1 span{
+    color:var(--green);
+}
+
+.hero-description{
+    max-width:580px;
+    color:#63716b;
+    font-size:17px;
+    line-height:1.7;
+    margin-bottom:34px;
+}
+
+.hero-actions{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.primary-btn{
+    border:0;
+    background:var(--green);
+    color:white;
+    padding:15px 23px;
+    border-radius:14px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 12px 25px rgba(25,169,116,.2);
+    transition:.25s;
+}
+
+.primary-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 16px 30px rgba(25,169,116,.27);
+}
+
+.secondary-btn{
+    border:1px solid var(--border);
+    background:white;
+    color:var(--dark);
+    padding:15px 23px;
+    border-radius:14px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.secondary-btn:hover{
+    transform:translateY(-3px);
+}
+
+
+/* =========================
+   HERO VISUAL
+========================= */
+
+.hero-visual{
+    position:relative;
+    min-height:470px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.orbit{
+    position:absolute;
+    width:390px;
+    height:390px;
+    border:1px dashed rgba(25,169,116,.3);
+    border-radius:50%;
+    animation:rotate 25s linear infinite;
+}
+
+.orbit::after{
+    content:"";
+    position:absolute;
+    width:12px;
+    height:12px;
+    background:var(--green);
+    border-radius:50%;
+    top:35px;
+    left:40px;
+    box-shadow:0 0 0 8px rgba(25,169,116,.12);
+}
+
+@keyframes rotate{
+    to{transform:rotate(360deg);}
+}
+
+.pet-card-hero{
+    width:340px;
+    padding:25px;
+    border-radius:30px;
+    background:rgba(255,255,255,.88);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.9);
+    box-shadow:0 30px 70px rgba(26,50,42,.14);
+    position:relative;
+    z-index:3;
+    transform:rotate(2deg);
+}
+
+.pet-picture{
+    height:235px;
+    border-radius:22px;
+    background:
+        linear-gradient(135deg,#dff9ed,#f3fffa);
+    display:grid;
+    place-items:center;
+    font-size:125px;
+    margin-bottom:18px;
+    overflow:hidden;
+}
+
+.pet-name-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.pet-name-row h3{
+    font-size:25px;
+}
+
+.online{
+    font-size:10px;
+    font-weight:800;
+    color:#08734e;
+    background:#e2fff1;
+    padding:6px 9px;
+    border-radius:20px;
+}
+
+.pet-card-hero p{
+    color:var(--muted);
+    margin-top:6px;
+}
+
+.floating-card{
+    position:absolute;
+    background:white;
+    border:1px solid #edf1ef;
+    box-shadow:0 18px 40px rgba(20,45,36,.12);
+    border-radius:17px;
+    padding:14px 17px;
+    z-index:5;
+}
+
+.location-float{
+    left:0;
+    bottom:65px;
+}
+
+.qr-float{
+    right:0;
+    top:55px;
+}
+
+.float-title{
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:4px;
+}
+
+.float-value{
+    font-size:14px;
+    font-weight:800;
+}
+
+
+/* =========================
+   GENERAL SECTION
+========================= */
+
+section{
+    padding:100px 7%;
+}
+
+.section-heading{
+    text-align:center;
+    max-width:650px;
+    margin:0 auto 55px;
+}
+
+.section-heading .mini{
+    color:var(--green);
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    margin-bottom:10px;
+}
+
+.section-heading h2{
+    font-size:42px;
+    letter-spacing:-2px;
+    margin-bottom:12px;
+}
+
+.section-heading p{
+    color:var(--muted);
+    line-height:1.6;
+}
+
+
+/* =========================
+   HOW IT WORKS
+========================= */
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    max-width:1050px;
+    margin:auto;
+}
+
+.step{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:23px;
+    padding:30px;
+    transition:.3s;
+}
+
+.step:hover{
+    transform:translateY(-7px);
+    box-shadow:0 20px 45px rgba(20,45,36,.08);
+}
+
+.step-number{
+    width:45px;
+    height:45px;
+    border-radius:13px;
+    background:#e5fff3;
+    color:var(--green);
+    display:grid;
+    place-items:center;
+    font-weight:900;
+    margin-bottom:22px;
+}
+
+.step-icon{
+    font-size:38px;
+    margin-bottom:18px;
+}
+
+.step h3{
+    margin-bottom:9px;
+}
+
+.step p{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.6;
+}
+
+
+/* =========================
+   PET PROFILE
+========================= */
+
+.profile-section{
+    background:#f0f8f4;
+}
+
+.profile{
+    max-width:1050px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:330px 1fr;
+    gap:25px;
+}
+
+.profile-left{
+    background:var(--dark);
+    color:white;
+    border-radius:28px;
+    padding:25px;
+    min-height:430px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+.profile-photo{
+    height:250px;
+    border-radius:21px;
+    background:linear-gradient(145deg,#d9f7e9,#aeeed1);
+    display:grid;
+    place-items:center;
+    font-size:125px;
+}
+
+.profile-left h2{
+    font-size:30px;
+    margin-top:20px;
+}
+
+.profile-left p{
+    color:#aebdb7;
+    margin-top:5px;
+}
+
+.verified-badge{
+    display:inline-flex;
+    margin-top:14px;
+    background:rgba(25,169,116,.18);
+    color:#61e4af;
+    padding:7px 11px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:800;
+}
+
+.profile-right{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:28px;
+    padding:32px;
+}
+
+.profile-right h3{
+    font-size:23px;
+    margin-bottom:22px;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:13px;
+}
+
+.info{
+    padding:18px;
+    border:1px solid var(--border);
+    border-radius:16px;
+}
+
+.info small{
+    color:#89948f;
+    display:block;
+    font-size:11px;
+    margin-bottom:6px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.info strong{
+    font-size:15px;
+}
+
+.owner-box{
+    margin-top:20px;
+    padding:20px;
+    background:#f4faf7;
+    border-radius:17px;
+}
+
+.owner-box h4{
+    margin-bottom:7px;
+}
+
+.owner-box p{
+    color:var(--muted);
+    line-height:1.5;
+    font-size:14px;
+}
+
+
+/* =========================
+   LOCATION
+========================= */
+
+.location-section{
+    background:var(--dark);
+    color:white;
+}
+
+.location-wrap{
+    max-width:1050px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+.location-panel{
+    padding:32px;
+    border-radius:27px;
+    background:#182c25;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.location-panel h3{
+    font-size:25px;
+    margin-bottom:10px;
+}
+
+.location-panel>p{
+    color:#aebcb6;
+    line-height:1.6;
+    font-size:14px;
+}
+
+.map-box{
+    margin-top:25px;
+    min-height:220px;
+    border-radius:20px;
+    background:
+        linear-gradient(rgba(16,32,26,.7),rgba(16,32,26,.7)),
+        repeating-linear-gradient(
+            45deg,
+            #274239,
+            #274239 2px,
+            #213a31 2px,
+            #213a31 25px
+        );
+    display:grid;
+    place-items:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.map-pin{
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    background:#dffff0;
+    color:var(--green);
+    display:grid;
+    place-items:center;
+    font-size:28px;
+    box-shadow:0 0 0 14px rgba(223,255,240,.12);
+}
+
+.coordinates{
+    margin-top:15px;
+    padding:14px;
+    background:rgba(255,255,255,.06);
+    border-radius:12px;
+    font-size:13px;
+    color:#bdcbc5;
+}
+
+.location-actions{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+    flex-wrap:wrap;
+}
+
+.location-actions button{
+    padding:12px 15px;
+    border-radius:11px;
+    border:0;
+    cursor:pointer;
+    font-weight:800;
+}
+
+.location-primary{
+    background:var(--green);
+    color:white;
+}
+
+.location-light{
+    background:white;
+    color:var(--dark);
+}
+
+
+/* =========================
+   HOSPITALS
+========================= */
+
+.hospital-grid{
+    max-width:1050px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.hospital{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:23px;
+    padding:25px;
+    transition:.3s;
+}
+
+.hospital:hover{
+    transform:translateY(-6px);
+    box-shadow:0 18px 40px rgba(20,45,36,.08);
+}
+
+.hospital-icon{
+    width:50px;
+    height:50px;
+    border-radius:14px;
+    background:#e9fff5;
+    display:grid;
+    place-items:center;
+    font-size:24px;
+    margin-bottom:18px;
+}
+
+.hospital h3{
+    margin-bottom:8px;
+}
+
+.hospital p{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.6;
+    margin-bottom:18px;
+}
+
+.hospital button{
+    width:100%;
+    padding:12px;
+    border:0;
+    border-radius:11px;
+    background:#edf9f4;
+    color:#08734e;
+    font-weight:800;
+    cursor:pointer;
+}
+
+
+/* =========================
+   QR SECTION
+========================= */
+
+.qr-section{
+    background:#eafff4;
+}
+
+.qr-layout{
+    max-width:950px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:35px;
+    align-items:center;
+}
+
+.qr-card{
+    background:white;
+    padding:35px;
+    border-radius:28px;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(20,60,45,.09);
+}
+
+.qr-card h3{
+    font-size:24px;
+}
+
+.qr-card p{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:7px;
+}
+
+#qrcode{
+    margin:25px auto;
+    width:180px;
+    height:180px;
+}
+
+.qr-card button{
+    border:0;
+    padding:13px 22px;
+    border-radius:12px;
+    background:var(--dark);
+    color:white;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.qr-info h2{
+    font-size:40px;
+    letter-spacing:-1.5px;
+    margin-bottom:18px;
+}
+
+.qr-info p{
+    color:#64726c;
+    line-height:1.7;
+}
+
+.feature-list{
+    list-style:none;
+    margin-top:22px;
+}
+
+.feature-list li{
+    margin:12px 0;
+    font-size:14px;
+    font-weight:700;
+}
+
+.feature-list li span{
+    color:var(--green);
+    margin-right:8px;
+}
+
+
+/* =========================
+   OWNER DASHBOARD
+========================= */
+
+.dashboard{
+    max-width:1050px;
+    margin:auto;
+    background:white;
+    border:1px solid var(--border);
+    border-radius:28px;
+    padding:35px;
+}
+
+.dashboard-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.dashboard-head p{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:4px;
+}
+
+.status{
+    background:#e2fff1;
+    color:#08734e;
+    padding:8px 12px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:800;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:17px;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.field.full{
+    grid-column:1/-1;
+}
+
+.field label{
+    font-size:12px;
+    font-weight:800;
+}
+
+.field input,
+.field textarea,
+.field select{
+    border:1px solid var(--border);
+    background:#fafcfb;
+    padding:13px;
+    border-radius:11px;
+    outline:none;
+    font-size:14px;
+}
+
+.field textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.field input:focus,
+.field textarea:focus{
+    border-color:var(--green);
+}
+
+.save{
+    margin-top:22px;
+}
+
+
+/* =========================
+   CTA
+========================= */
+
+.cta{
+    padding:90px 7%;
+    text-align:center;
+}
+
+.cta-box{
+    max-width:950px;
+    margin:auto;
+    padding:60px 30px;
+    border-radius:32px;
+    background:var(--dark);
+    color:white;
+    position:relative;
+    overflow:hidden;
+}
+
+.cta-box::before{
+    content:"🐾";
+    position:absolute;
+    font-size:220px;
+    opacity:.035;
+    right:-20px;
+    bottom:-65px;
+}
+
+.cta-box h2{
+    font-size:42px;
+    letter-spacing:-2px;
+    margin-bottom:13px;
+}
+
+.cta-box p{
+    color:#afbbb6;
+    margin-bottom:25px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    background:#0c1713;
+    color:white;
+    text-align:center;
+    padding:30px 7%;
+}
+
+footer .footer-logo{
+    font-weight:900;
+    font-size:19px;
+}
+
+footer span{
+    color:var(--green);
+}
+
+footer p{
+    color:#7d8d86;
+    font-size:12px;
+    margin-top:7px;
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+    position:fixed;
+    bottom:25px;
+    left:50%;
+    transform:translate(-50%,100px);
+    background:var(--dark);
+    color:white;
+    padding:14px 20px;
+    border-radius:13px;
+    font-size:13px;
+    font-weight:700;
+    z-index:5000;
+    opacity:0;
+    transition:.35s;
+}
+
+.toast.show{
+    transform:translate(-50%,0);
+    opacity:1;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:850px){
+
+    .nav-links{
+        display:none;
+    }
+
+    .hero{
+        grid-template-columns:1fr;
+        text-align:center;
+        padding-top:125px;
+    }
+
+    .hero-description{
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    .hero-actions{
+        justify-content:center;
+    }
+
+    .hero-visual{
+        min-height:420px;
+    }
+
+    .profile,
+    .location-wrap,
+    .qr-layout{
+        grid-template-columns:1fr;
+    }
+
+    .steps,
+    .hospital-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:550px){
+
+    section{
+        padding:70px 5%;
+    }
+
+    .hero{
+        padding-left:5%;
+        padding-right:5%;
+    }
+
+    .hero h1{
+        letter-spacing:-2.5px;
+    }
+
+    .pet-card-hero{
+        width:290px;
+    }
+
+    .orbit{
+        width:330px;
+        height:330px;
+    }
+
+    .floating-card{
+        display:none;
+    }
+
+    .info-grid,
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .field.full{
+        grid-column:auto;
+    }
+
+    .section-heading h2{
+        font-size:33px;
+    }
+
+    .qr-info h2,
+    .cta-box h2{
+        font-size:32px;
+    }
+
+    .dashboard{
+        padding:22px;
+    }
+}
+
+</style>
 </head>
+
 
 <body>
 
-<!-- NAVIGATION -->
 
-<nav>
-    <div class="logo">🐾 Pet<span>Safe</span></div>
+<!-- =========================
+     NAVIGATION
+========================= -->
 
-    <button onclick="document.getElementById('pet').scrollIntoView()">
-        View Pet
-    </button>
-</nav>
+<nav class="navbar">
 
+    <div class="logo">
+        <div class="logo-icon">🐾</div>
+        PAW<span>SAFE</span>
+    </div>
 
-<!-- HERO -->
+    <div class="nav-links">
 
-<header class="hero">
-
-    <div class="hero-text">
-
-        <div class="badge">
-            SMART PET IDENTIFICATION SYSTEM
-        </div>
-
-        <h1>
-            Keep every pet<br>
-            <span>safe & connected.</span>
-        </h1>
-
-        <p>
-            A QR-based pet identification system that helps
-            people identify a lost pet, contact its owner,
-            find its last-seen location and locate nearby
-            veterinary hospitals.
-        </p>
-
-        <a href="#pet" class="hero-btn">
-            View Pet Profile
-        </a>
-
-        <a href="#qr" class="hero-btn secondary">
-            Generate QR
-        </a>
+        <a href="#home">Home</a>
+        <a href="#how">How it works</a>
+        <a href="#profile">Pet Profile</a>
+        <a href="#location">Location</a>
+        <a href="#hospitals">Veterinary Care</a>
 
     </div>
 
-    <div class="pet-icon">
-        🐕
+    <button
+        class="nav-button"
+        onclick="scrollToQR()">
+
+        Scan / QR
+
+    </button>
+
+</nav>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<header class="hero" id="home">
+
+    <div class="hero-content">
+
+        <div class="pill">
+            <span class="pill-dot"></span>
+            SMART PET RECOVERY SYSTEM
+        </div>
+
+        <h1>
+            Helping lost pets
+            <span>find their way home.</span>
+        </h1>
+
+        <p class="hero-description">
+
+            PAWSAFE uses a simple QR-based identity system
+            to connect a lost pet with its owner.
+            Scan the tag, view the pet profile, check
+            the last-known location and find veterinary
+            care nearby.
+
+        </p>
+
+        <div class="hero-actions">
+
+            <button
+                class="primary-btn"
+                onclick="scrollToQR()">
+
+                🔳 View Pet QR
+
+            </button>
+
+            <button
+                class="secondary-btn"
+                onclick="scrollToProfile()">
+
+                🐶 Explore Profile
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- HERO CARD -->
+
+    <div class="hero-visual">
+
+        <div class="orbit"></div>
+
+        <div class="floating-card qr-float">
+
+            <div class="float-title">
+                QR STATUS
+            </div>
+
+            <div class="float-value">
+                ✓ ACTIVE
+            </div>
+
+        </div>
+
+
+        <div class="floating-card location-float">
+
+            <div class="float-title">
+                LAST SEEN
+            </div>
+
+            <div class="float-value">
+                📍 Bengaluru
+            </div>
+
+        </div>
+
+
+        <div class="pet-card-hero">
+
+            <div class="pet-picture">
+                🐕
+            </div>
+
+            <div class="pet-name-row">
+
+                <h3 id="heroPetName">
+                    Buddy
+                </h3>
+
+                <span class="online">
+                    ● SAFE ID
+                </span>
+
+            </div>
+
+            <p id="heroBreed">
+                Golden Retriever · Male
+            </p>
+
+        </div>
+
     </div>
 
 </header>
 
 
-<!-- PET PROFILE -->
+<!-- =========================
+     HOW IT WORKS
+========================= -->
 
-<section id="pet">
+<section id="how">
 
-    <div class="section-title">
-        <h2>🐾 Pet Profile</h2>
-        <p>Important information available after scanning the QR code</p>
+    <div class="section-heading">
+
+        <div class="mini">
+            SIMPLE • FAST • SMART
+        </div>
+
+        <h2>
+            How PAWSAFE works
+        </h2>
+
+        <p>
+            A simple system designed to help people
+            identify and return lost pets faster.
+        </p>
+
     </div>
 
-    <div class="pet-card">
 
-        <div class="pet-top">
+    <div class="steps">
 
-            <div class="pet-photo">
-                🐶
+        <div class="step">
+
+            <div class="step-number">
+                01
             </div>
 
-            <div class="pet-info">
+            <div class="step-icon">
+                🔳
+            </div>
 
-                <h2 id="displayPetName">Buddy</h2>
+            <h3>
+                Scan the QR
+            </h3>
 
-                <p>
-                    <b>Breed:</b>
-                    <span id="displayBreed">Golden Retriever</span>
+            <p>
+                A person who finds the pet scans
+                the QR code attached to its collar.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                02
+            </div>
+
+            <div class="step-icon">
+                👤
+            </div>
+
+            <h3>
+                Identify the Pet
+            </h3>
+
+            <p>
+                The QR page displays the pet's
+                basic profile and owner contact information.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                03
+            </div>
+
+            <div class="step-icon">
+                📍
+            </div>
+
+            <h3>
+                Help Bring It Home
+            </h3>
+
+            <p>
+                The owner can update the location
+                and the finder can locate nearby veterinary care.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PET PROFILE
+========================= -->
+
+<section class="profile-section" id="profile">
+
+    <div class="section-heading">
+
+        <div class="mini">
+            PET IDENTITY
+        </div>
+
+        <h2>
+            Meet your pet's profile
+        </h2>
+
+        <p>
+            Everything important in one simple,
+            easy-to-read profile.
+        </p>
+
+    </div>
+
+
+    <div class="profile">
+
+        <!-- LEFT -->
+
+        <div class="profile-left">
+
+            <div>
+
+                <div class="profile-photo">
+                    🐶
+                </div>
+
+                <h2 id="profilePetName">
+                    Buddy
+                </h2>
+
+                <p id="profileBreed">
+                    Golden Retriever
                 </p>
 
+                <div class="verified-badge">
+                    ✓ VERIFIED PET ID
+                </div>
+
+            </div>
+
+            <div>
+
                 <p>
-                    <b>Age:</b>
-                    <span id="displayAge">3 Years</span>
+                    Pet ID:
+                    <strong id="petId">
+                        PS-2026-001
+                    </strong>
                 </p>
 
-                <span class="verified">
-                    ✓ VERIFIED PET PROFILE
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT -->
+
+        <div class="profile-right">
+
+            <h3>
+                Pet information
+            </h3>
+
+            <div class="info-grid">
+
+                <div class="info">
+
+                    <small>
+                        Name
+                    </small>
+
+                    <strong id="infoName">
+                        Buddy
+                    </strong>
+
+                </div>
+
+
+                <div class="info">
+
+                    <small>
+                        Breed
+                    </small>
+
+                    <strong id="infoBreed">
+                        Golden Retriever
+                    </strong>
+
+                </div>
+
+
+                <div class="info">
+
+                    <small>
+                        Age
+                    </small>
+
+                    <strong id="infoAge">
+                        3 Years
+                    </strong>
+
+                </div>
+
+
+                <div class="info">
+
+                    <small>
+                        Gender
+                    </small>
+
+                    <strong id="infoGender">
+                        Male
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="owner-box">
+
+                <h4>
+                    👤 Owner
+                </h4>
+
+                <p>
+                    <strong id="infoOwner">
+                        Vikas
+                    </strong>
+                    <br>
+
+                    Contact:
+                    <strong id="infoPhone">
+                        +91 XXXXX XXXXX
+                    </strong>
+                </p>
+
+            </div>
+
+
+            <div class="owner-box">
+
+                <h4>
+                    📝 Important information
+                </h4>
+
+                <p id="infoNotes">
+                    Friendly dog. Please contact the owner
+                    if found.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     LOCATION
+========================= -->
+
+<section class="location-section" id="location">
+
+    <div class="section-heading">
+
+        <div class="mini">
+            SMART LOCATION
+        </div>
+
+        <h2>
+            Know where your pet was last seen.
+        </h2>
+
+        <p>
+            Use the phone's GPS to capture a location
+            and open it directly in Google Maps.
+        </p>
+
+    </div>
+
+
+    <div class="location-wrap">
+
+        <div class="location-panel">
+
+            <h3>
+                📍 Last Known Location
+            </h3>
+
+            <p>
+                Location can be updated when the pet
+                is found or when the owner wants to
+                record its current position.
+            </p>
+
+
+            <div class="map-box">
+
+                <div class="map-pin">
+                    📍
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="location-panel">
+
+            <h3>
+                Location Details
+            </h3>
+
+            <p>
+                Current demo location is set to Bengaluru.
+                You can use GPS during your exhibition demo.
+            </p>
+
+
+            <div class="coordinates">
+
+                <div>
+                    <strong id="locationStatus">
+                        Demo Location
+                    </strong>
+                </div>
+
+                <br>
+
+                <span id="coordinates">
+                    12.9716, 77.5946
                 </span>
 
             </div>
 
-        </div>
 
+            <div class="location-actions">
 
-        <div class="info-grid">
+                <button
+                    class="location-primary"
+                    onclick="getLocation()">
 
-            <div class="info-box">
-                <small>Pet ID</small>
-                <strong id="displayPetId">PET-2026-001</strong>
-            </div>
+                    📍 Use My GPS
 
-            <div class="info-box">
-                <small>Gender</small>
-                <strong id="displayGender">Male</strong>
-            </div>
+                </button>
 
-            <div class="info-box">
-                <small>Owner</small>
-                <strong id="displayOwner">Vikas</strong>
-            </div>
+                <button
+                    class="location-light"
+                    onclick="openMap()">
 
-            <div class="info-box">
-                <small>Contact</small>
-                <strong id="displayPhone">+91 XXXXX XXXXX</strong>
+                    🗺️ Open Maps
+
+                </button>
+
             </div>
 
         </div>
@@ -636,133 +1597,25 @@
 </section>
 
 
-<!-- OWNER INFORMATION -->
+<!-- =========================
+     VETERINARY HOSPITALS
+========================= -->
 
-<section>
+<section id="hospitals">
 
-    <div class="section-title">
-        <h2>👤 Owner Information</h2>
-        <p>Contact information for returning a lost pet</p>
-    </div>
+    <div class="section-heading">
 
-    <div class="owner-card">
-
-        <h2>Pet Registration</h2>
-
-        <div class="form-grid">
-
-            <div>
-                <label>Pet Name</label>
-                <input id="petName" value="Buddy">
-            </div>
-
-            <div>
-                <label>Breed</label>
-                <input id="breed" value="Golden Retriever">
-            </div>
-
-            <div>
-                <label>Age</label>
-                <input id="age" value="3 Years">
-            </div>
-
-            <div>
-                <label>Gender</label>
-                <input id="gender" value="Male">
-            </div>
-
-            <div>
-                <label>Owner Name</label>
-                <input id="owner" value="Vikas">
-            </div>
-
-            <div>
-                <label>Contact Number</label>
-                <input id="phone" value="+91 XXXXX XXXXX">
-            </div>
-
-            <div class="full">
-                <label>Important Information</label>
-                <textarea id="notes">Friendly dog. Please contact the owner if found.</textarea>
-            </div>
-
+        <div class="mini">
+            EMERGENCY SUPPORT
         </div>
 
-        <button class="save-btn" onclick="savePet()">
-            💾 Save Pet Information
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- LOCATION -->
-
-<section>
-
-    <div class="section-title">
-
-        <h2>📍 Pet Location</h2>
+        <h2>
+            Veterinary care nearby.
+        </h2>
 
         <p>
-            Last known location of the pet
-        </p>
-
-    </div>
-
-
-    <div class="location-card">
-
-        <h3>Last Seen Location</h3>
-
-        <p>
-            The owner can update the pet's location using
-            the phone's GPS. Location access requires permission.
-        </p>
-
-        <div class="location-display">
-
-            <strong id="locationText">
-                📍 Demo Location: Bengaluru, Karnataka
-            </strong>
-
-            <br><br>
-
-            <small id="coordinates">
-                Coordinates: 12.9716, 77.5946
-            </small>
-
-        </div>
-
-
-        <div class="location-buttons">
-
-            <button class="primary" onclick="getLocation()">
-                📍 Use My Current Location
-            </button>
-
-            <button class="light" onclick="openMap()">
-                🗺️ Open in Google Maps
-            </button>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- HOSPITALS -->
-
-<section>
-
-    <div class="section-title">
-
-        <h2>🏥 Nearby Veterinary Hospitals</h2>
-
-        <p>
-            Quickly find veterinary care for the pet
+            Quickly search for veterinary hospitals
+            and pet clinics around your current location.
         </p>
 
     </div>
@@ -776,19 +1629,17 @@
                 🏥
             </div>
 
-            <h3>Nearby Veterinary Hospital</h3>
+            <h3>
+                Veterinary Hospital
+            </h3>
 
             <p>
-                Find veterinary hospitals close to
-                the pet's current location.
+                Search for veterinary hospitals
+                near your current location.
             </p>
 
-            <button
-                class="hospital-btn"
-                onclick="findHospitals()">
-
-                Find Nearest Hospital
-
+            <button onclick="findHospital()">
+                Find Hospital →
             </button>
 
         </div>
@@ -800,19 +1651,17 @@
                 🩺
             </div>
 
-            <h3>Pet Emergency Care</h3>
+            <h3>
+                Pet Clinic
+            </h3>
 
             <p>
-                Search Google Maps for emergency
-                veterinary services near you.
+                Find nearby animal clinics for
+                basic medical support.
             </p>
 
-            <button
-                class="hospital-btn"
-                onclick="findHospitals()">
-
-                Find Emergency Care
-
+            <button onclick="findClinic()">
+                Find Pet Clinic →
             </button>
 
         </div>
@@ -821,22 +1670,20 @@
         <div class="hospital">
 
             <div class="hospital-icon">
-                ❤️
+                🚨
             </div>
 
-            <h3>Pet Health Support</h3>
+            <h3>
+                Emergency Vet
+            </h3>
 
             <p>
-                Quickly access nearby animal clinics
-                when a pet needs medical attention.
+                Search for emergency veterinary
+                services near your location.
             </p>
 
-            <button
-                class="hospital-btn"
-                onclick="findHospitals()">
-
-                Find Pet Clinic
-
+            <button onclick="findEmergency()">
+                Emergency Search →
             </button>
 
         </div>
@@ -846,51 +1693,75 @@
 </section>
 
 
-<!-- QR CODE -->
+<!-- =========================
+     QR CODE
+========================= -->
 
 <section class="qr-section" id="qr">
 
-    <div class="qr-container">
+    <div class="qr-layout">
 
         <div class="qr-card">
 
-            <h2>🔳 Pet QR Code</h2>
+            <h3>
+                🔳 Buddy's Smart ID
+            </h3>
 
             <p>
-                Scan this QR code to open the PetSafe
-                pet identification page.
+                Scan this code to open this website.
             </p>
 
             <div id="qrcode"></div>
 
             <button onclick="generateQR()">
-                Generate QR Again
+                Generate QR
             </button>
 
         </div>
 
 
-        <div class="qr-explanation">
+        <div class="qr-info">
+
+            <div class="mini">
+                SMART COLLAR
+            </div>
 
             <h2>
-                One scan can help bring a pet home.
+                One small QR.
+                One big difference.
             </h2>
 
             <p>
-                The QR code can be attached to a pet's
-                collar. If someone finds the pet, they
-                can scan the code using a smartphone and
-                view the pet profile and contact information.
+                Attach the QR code to a pet's collar.
+                If someone finds the pet, they can scan
+                the code and access the information provided
+                by the owner.
             </p>
 
-            <br>
 
-            <p>
-                <b>Privacy:</b> Only information that the
-                owner chooses to publish should be displayed.
-                Avoid publishing a home address or other
-                sensitive information.
-            </p>
+            <ul class="feature-list">
+
+                <li>
+                    <span>✓</span>
+                    Instant pet identification
+                </li>
+
+                <li>
+                    <span>✓</span>
+                    Owner contact information
+                </li>
+
+                <li>
+                    <span>✓</span>
+                    Last-known location
+                </li>
+
+                <li>
+                    <span>✓</span>
+                    Nearby veterinary support
+                </li>
+
+            </ul>
 
         </div>
 
@@ -899,455 +1770,710 @@
 </section>
 
 
-<!-- HOW IT WORKS -->
+<!-- =========================
+     OWNER DASHBOARD
+========================= -->
 
-<section>
+<section id="register">
 
-    <div class="section-title">
+    <div class="section-heading">
 
-        <h2>How PetSafe Works</h2>
+        <div class="mini">
+            PET REGISTRATION
+        </div>
+
+        <h2>
+            Manage your pet profile.
+        </h2>
 
         <p>
-            Three simple steps
+            Enter demo information here and instantly
+            update the profile displayed above.
         </p>
 
     </div>
 
 
-    <div class="steps">
+    <div class="dashboard">
 
-        <div class="step">
+        <div class="dashboard-head">
 
-            <div class="step-number">
-                1
+            <div>
+
+                <h3>
+                    PetSafe Owner Dashboard
+                </h3>
+
+                <p>
+                    Update your pet's public information
+                </p>
+
             </div>
 
-            <h3>Scan QR</h3>
-
-            <p>
-                A person finds a lost pet and scans
-                the QR code on its collar.
-            </p>
+            <div class="status">
+                ● ACTIVE
+            </div>
 
         </div>
 
 
-        <div class="step">
+        <div class="form-grid">
 
-            <div class="step-number">
-                2
+            <div class="field">
+
+                <label>
+                    Pet Name
+                </label>
+
+                <input
+                    id="petNameInput"
+                    value="Buddy">
+
             </div>
 
-            <h3>View Profile</h3>
 
-            <p>
-                The pet's important information and
-                owner's contact details are displayed.
-            </p>
+            <div class="field">
+
+                <label>
+                    Breed
+                </label>
+
+                <input
+                    id="breedInput"
+                    value="Golden Retriever">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Age
+                </label>
+
+                <input
+                    id="ageInput"
+                    value="3 Years">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Gender
+                </label>
+
+                <select id="genderInput">
+
+                    <option>Male</option>
+                    <option>Female</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Owner Name
+                </label>
+
+                <input
+                    id="ownerInput"
+                    value="Vikas">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Contact Number
+                </label>
+
+                <input
+                    id="phoneInput"
+                    value="+91 XXXXX XXXXX">
+
+            </div>
+
+
+            <div class="field full">
+
+                <label>
+                    Important Information
+                </label>
+
+                <textarea id="notesInput">Friendly dog. Please contact the owner if found.</textarea>
+
+            </div>
 
         </div>
 
 
-        <div class="step">
+        <button
+            class="primary-btn save"
+            onclick="saveProfile()">
 
-            <div class="step-number">
-                3
-            </div>
+            💾 Save Profile
 
-            <h3>Get Help</h3>
-
-            <p>
-                The last-seen location and nearby
-                veterinary hospitals can be accessed.
-            </p>
-
-        </div>
+        </button>
 
     </div>
 
 </section>
 
 
-<!-- FOOTER -->
+<!-- =========================
+     CTA
+========================= -->
+
+<section class="cta">
+
+    <div class="cta-box">
+
+        <h2>
+            Technology that brings pets home.
+        </h2>
+
+        <p>
+            PAWSAFE — Smart identification for a safer
+            and more connected pet community.
+        </p>
+
+        <button
+            class="primary-btn"
+            onclick="scrollToQR()">
+
+            🔳 View QR System
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer>
 
-    <h3>🐾 PetSafe</h3>
+    <div class="footer-logo">
+        PAW<span>SAFE</span>
+    </div>
 
     <p>
-        Smart technology for safer pets.
+        Smart Pet Identification & Recovery System
     </p>
 
     <p>
-        © 2026 PetSafe Exhibition Project
+        © 2026 PAWSAFE Exhibition Project
     </p>
 
 </footer>
 
 
+<!-- =========================
+     TOAST
+========================= -->
+
+<div
+    class="toast"
+    id="toast">
+
+    Saved successfully ✓
+
+</div>
+
+
 <script>
 
-    /*
-     * PET DATA
-     */
+/* =========================
+   GLOBAL LOCATION
+========================= */
 
-    let latitude = 12.9716;
-    let longitude = 77.5946;
-
-
-    /*
-     * SAVE PET INFORMATION
-     */
-
-    function savePet() {
-
-        const petName =
-            document.getElementById("petName").value;
-
-        const breed =
-            document.getElementById("breed").value;
-
-        const age =
-            document.getElementById("age").value;
-
-        const gender =
-            document.getElementById("gender").value;
-
-        const owner =
-            document.getElementById("owner").value;
-
-        const phone =
-            document.getElementById("phone").value;
+let latitude = 12.9716;
+let longitude = 77.5946;
 
 
-        document.getElementById("displayPetName")
-            .textContent = petName;
+/* =========================
+   TOAST MESSAGE
+========================= */
 
-        document.getElementById("displayBreed")
-            .textContent = breed;
+function showToast(message){
 
-        document.getElementById("displayAge")
-            .textContent = age;
+    const toast =
+        document.getElementById("toast");
 
-        document.getElementById("displayGender")
-            .textContent = gender;
+    toast.textContent = message;
 
-        document.getElementById("displayOwner")
-            .textContent = owner;
+    toast.classList.add("show");
 
-        document.getElementById("displayPhone")
-            .textContent = phone;
+    setTimeout(function(){
 
+        toast.classList.remove("show");
 
-        localStorage.setItem(
-            "petName",
-            petName
-        );
-
-        localStorage.setItem(
-            "breed",
-            breed
-        );
-
-        localStorage.setItem(
-            "age",
-            age
-        );
-
-        localStorage.setItem(
-            "gender",
-            gender
-        );
-
-        localStorage.setItem(
-            "owner",
-            owner
-        );
-
-        localStorage.setItem(
-            "phone",
-            phone
-        );
+    },2500);
+}
 
 
-        alert("🐾 Pet information saved successfully!");
-    }
+/* =========================
+   SCROLL FUNCTIONS
+========================= */
 
+function scrollToQR(){
 
-    /*
-     * LOAD SAVED DATA
-     */
-
-    function loadPet() {
-
-        const fields = [
-            "petName",
-            "breed",
-            "age",
-            "gender",
-            "owner",
-            "phone"
-        ];
-
-
-        fields.forEach(function(field) {
-
-            const saved =
-                localStorage.getItem(field);
-
-            if (saved) {
-
-                document.getElementById(field)
-                    .value = saved;
-            }
-
+    document
+        .getElementById("qr")
+        .scrollIntoView({
+            behavior:"smooth"
         });
 
-
-        const petName =
-            localStorage.getItem("petName");
-
-        const breed =
-            localStorage.getItem("breed");
-
-        const age =
-            localStorage.getItem("age");
-
-        const gender =
-            localStorage.getItem("gender");
-
-        const owner =
-            localStorage.getItem("owner");
-
-        const phone =
-            localStorage.getItem("phone");
+}
 
 
-        if (petName)
-            document.getElementById("displayPetName")
-                .textContent = petName;
+function scrollToProfile(){
 
-        if (breed)
-            document.getElementById("displayBreed")
-                .textContent = breed;
+    document
+        .getElementById("profile")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
 
-        if (age)
-            document.getElementById("displayAge")
-                .textContent = age;
-
-        if (gender)
-            document.getElementById("displayGender")
-                .textContent = gender;
-
-        if (owner)
-            document.getElementById("displayOwner")
-                .textContent = owner;
-
-        if (phone)
-            document.getElementById("displayPhone")
-                .textContent = phone;
-    }
+}
 
 
-    /*
-     * GPS LOCATION
-     */
+/* =========================
+   SAVE PROFILE
+========================= */
 
-    function getLocation() {
+function saveProfile(){
 
-        if (!navigator.geolocation) {
+    const pet =
+        document.getElementById("petNameInput").value;
 
-            alert(
-                "Your browser does not support location."
-            );
+    const breed =
+        document.getElementById("breedInput").value;
 
-            return;
-        }
+    const age =
+        document.getElementById("ageInput").value;
 
+    const gender =
+        document.getElementById("genderInput").value;
 
-        document.getElementById("locationText")
-            .textContent =
-            "📍 Getting your current location...";
+    const owner =
+        document.getElementById("ownerInput").value;
 
+    const phone =
+        document.getElementById("phoneInput").value;
 
-        navigator.geolocation.getCurrentPosition(
-
-            function(position) {
-
-                latitude =
-                    position.coords.latitude;
-
-                longitude =
-                    position.coords.longitude;
+    const notes =
+        document.getElementById("notesInput").value;
 
 
-                document.getElementById("locationText")
-                    .textContent =
-                    "📍 Current location captured";
+    /* Update Hero */
+
+    document.getElementById("heroPetName")
+        .textContent = pet;
+
+    document.getElementById("heroBreed")
+        .textContent = breed + " · " + gender;
 
 
-                document.getElementById("coordinates")
-                    .textContent =
-                    "Coordinates: " +
-                    latitude.toFixed(6) +
-                    ", " +
-                    longitude.toFixed(6);
+    /* Update Profile */
+
+    document.getElementById("profilePetName")
+        .textContent = pet;
+
+    document.getElementById("profileBreed")
+        .textContent = breed;
 
 
-                localStorage.setItem(
-                    "latitude",
-                    latitude
-                );
+    document.getElementById("infoName")
+        .textContent = pet;
 
-                localStorage.setItem(
-                    "longitude",
-                    longitude
-                );
+    document.getElementById("infoBreed")
+        .textContent = breed;
+
+    document.getElementById("infoAge")
+        .textContent = age;
+
+    document.getElementById("infoGender")
+        .textContent = gender;
+
+    document.getElementById("infoOwner")
+        .textContent = owner;
+
+    document.getElementById("infoPhone")
+        .textContent = phone;
+
+    document.getElementById("infoNotes")
+        .textContent = notes;
 
 
-                alert(
-                    "📍 Location updated successfully!"
-                );
+    /* Save locally */
 
-            },
+    localStorage.setItem(
+        "pawsafe_pet",
+        pet
+    );
 
-            function(error) {
+    localStorage.setItem(
+        "pawsafe_breed",
+        breed
+    );
 
-                alert(
-                    "Location permission was not given. " +
-                    "Please allow location access."
-                );
+    localStorage.setItem(
+        "pawsafe_age",
+        age
+    );
 
-            }
+    localStorage.setItem(
+        "pawsafe_gender",
+        gender
+    );
 
+    localStorage.setItem(
+        "pawsafe_owner",
+        owner
+    );
+
+    localStorage.setItem(
+        "pawsafe_phone",
+        phone
+    );
+
+    localStorage.setItem(
+        "pawsafe_notes",
+        notes
+    );
+
+
+    showToast("Pet profile updated ✓");
+
+}
+
+
+/* =========================
+   LOAD PROFILE
+========================= */
+
+function loadProfile(){
+
+    const pet =
+        localStorage.getItem("pawsafe_pet");
+
+    const breed =
+        localStorage.getItem("pawsafe_breed");
+
+    const age =
+        localStorage.getItem("pawsafe_age");
+
+    const gender =
+        localStorage.getItem("pawsafe_gender");
+
+    const owner =
+        localStorage.getItem("pawsafe_owner");
+
+    const phone =
+        localStorage.getItem("pawsafe_phone");
+
+    const notes =
+        localStorage.getItem("pawsafe_notes");
+
+
+    if(!pet) return;
+
+
+    document.getElementById("petNameInput")
+        .value = pet;
+
+    document.getElementById("breedInput")
+        .value = breed;
+
+    document.getElementById("ageInput")
+        .value = age;
+
+    document.getElementById("genderInput")
+        .value = gender;
+
+    document.getElementById("ownerInput")
+        .value = owner;
+
+    document.getElementById("phoneInput")
+        .value = phone;
+
+    document.getElementById("notesInput")
+        .value = notes;
+
+
+    document.getElementById("heroPetName")
+        .textContent = pet;
+
+    document.getElementById("heroBreed")
+        .textContent = breed + " · " + gender;
+
+    document.getElementById("profilePetName")
+        .textContent = pet;
+
+    document.getElementById("profileBreed")
+        .textContent = breed;
+
+    document.getElementById("infoName")
+        .textContent = pet;
+
+    document.getElementById("infoBreed")
+        .textContent = breed;
+
+    document.getElementById("infoAge")
+        .textContent = age;
+
+    document.getElementById("infoGender")
+        .textContent = gender;
+
+    document.getElementById("infoOwner")
+        .textContent = owner;
+
+    document.getElementById("infoPhone")
+        .textContent = phone;
+
+    document.getElementById("infoNotes")
+        .textContent = notes;
+
+}
+
+
+/* =========================
+   GPS
+========================= */
+
+function getLocation(){
+
+    if(!navigator.geolocation){
+
+        showToast(
+            "GPS is not supported by this browser."
         );
 
+        return;
     }
 
 
-    /*
-     * OPEN LOCATION IN GOOGLE MAPS
-     */
-
-    function openMap() {
-
-        const url =
-            "https://www.google.com/maps/search/?api=1&query=" +
-            latitude +
-            "," +
-            longitude;
+    document.getElementById("locationStatus")
+        .textContent =
+        "Requesting GPS location...";
 
 
-        window.open(
-            url,
-            "_blank"
-        );
+    navigator.geolocation.getCurrentPosition(
 
-    }
-
-
-    /*
-     * FIND NEAREST VETERINARY HOSPITAL
-     */
-
-    function findHospitals() {
-
-        const url =
-            "https://www.google.com/maps/search/veterinary+hospital+near+me";
-
-
-        window.open(
-            url,
-            "_blank"
-        );
-
-    }
-
-
-    /*
-     * GENERATE QR CODE
-     */
-
-    function generateQR() {
-
-        const qrContainer =
-            document.getElementById("qrcode");
-
-
-        qrContainer.innerHTML = "";
-
-
-        new QRCode(
-
-            qrContainer,
-
-            {
-
-                text: window.location.href,
-
-                width: 180,
-
-                height: 180
-
-            }
-
-        );
-
-    }
-
-
-    /*
-     * LOAD SAVED LOCATION
-     */
-
-    function loadLocation() {
-
-        const savedLat =
-            localStorage.getItem("latitude");
-
-        const savedLng =
-            localStorage.getItem("longitude");
-
-
-        if (savedLat && savedLng) {
+        function(position){
 
             latitude =
-                parseFloat(savedLat);
+                position.coords.latitude;
 
             longitude =
-                parseFloat(savedLng);
+                position.coords.longitude;
 
 
-            document.getElementById("locationText")
+            document.getElementById("locationStatus")
                 .textContent =
-                "📍 Saved Last-Seen Location";
+                "✓ Current GPS Location";
 
 
             document.getElementById("coordinates")
                 .textContent =
-                "Coordinates: " +
-                latitude.toFixed(6) +
-                ", " +
-                longitude.toFixed(6);
+                latitude.toFixed(6)
+                + ", "
+                + longitude.toFixed(6);
+
+
+            localStorage.setItem(
+                "pawsafe_latitude",
+                latitude
+            );
+
+            localStorage.setItem(
+                "pawsafe_longitude",
+                longitude
+            );
+
+
+            showToast(
+                "Location captured successfully ✓"
+            );
+
+        },
+
+        function(){
+
+            document.getElementById("locationStatus")
+                .textContent =
+                "Location permission denied";
+
+
+            showToast(
+                "Please allow location access."
+            );
 
         }
 
+    );
+
+}
+
+
+/* =========================
+   OPEN GOOGLE MAPS
+========================= */
+
+function openMap(){
+
+    const url =
+        "https://www.google.com/maps/search/?api=1&query="
+        + latitude
+        + ","
+        + longitude;
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* =========================
+   VETERINARY SEARCH
+========================= */
+
+function findHospital(){
+
+    window.open(
+        "https://www.google.com/maps/search/veterinary+hospital+near+me",
+        "_blank"
+    );
+
+}
+
+
+function findClinic(){
+
+    window.open(
+        "https://www.google.com/maps/search/pet+clinic+near+me",
+        "_blank"
+    );
+
+}
+
+
+function findEmergency(){
+
+    window.open(
+        "https://www.google.com/maps/search/emergency+veterinary+hospital+near+me",
+        "_blank"
+    );
+
+}
+
+
+/* =========================
+   QR CODE
+========================= */
+
+function generateQR(){
+
+    const container =
+        document.getElementById("qrcode");
+
+    container.innerHTML = "";
+
+
+    new QRCode(
+
+        container,
+
+        {
+            text:window.location.href,
+
+            width:180,
+
+            height:180,
+
+            colorDark:"#10201a",
+
+            colorLight:"#ffffff",
+
+            correctLevel:QRCode.CorrectLevel.H
+
+        }
+
+    );
+
+}
+
+
+/* =========================
+   LOAD SAVED LOCATION
+========================= */
+
+function loadLocation(){
+
+    const savedLat =
+        localStorage.getItem(
+            "pawsafe_latitude"
+        );
+
+    const savedLng =
+        localStorage.getItem(
+            "pawsafe_longitude"
+        );
+
+
+    if(savedLat && savedLng){
+
+        latitude =
+            parseFloat(savedLat);
+
+        longitude =
+            parseFloat(savedLng);
+
+
+        document.getElementById("locationStatus")
+            .textContent =
+            "✓ Saved Last-Seen Location";
+
+
+        document.getElementById("coordinates")
+            .textContent =
+            latitude.toFixed(6)
+            + ", "
+            + longitude.toFixed(6);
+
     }
 
+}
 
-    /*
-     * START WEBSITE
-     */
 
-    window.onload = function() {
+/* =========================
+   INITIALIZE
+========================= */
 
-        loadPet();
+window.addEventListener(
+    "load",
+    function(){
+
+        loadProfile();
 
         loadLocation();
 
         generateQR();
 
-    };
+    }
+);
 
 </script>
 
