@@ -2683,7 +2683,7 @@ footer p{
 
                 Pet ID:
                 <strong>
-                    PS-2026-001
+                    PV-2026-6767
                 </strong>
 
             </p>
@@ -2766,7 +2766,7 @@ footer p{
                 <p>
 
                     <strong id="infoOwner">
-                        Vikas
+                        MAX 
                     </strong>
 
                     <br>
@@ -2789,7 +2789,7 @@ footer p{
 
                 <p id="infoNotes">
 
-                    Friendly pet.
+                    Friendly pet. Be safee
                     Please contact the owner if found.
 
                 </p>
@@ -3079,7 +3079,7 @@ footer p{
             <div id="qrcode"></div>
 
             <div class="id-number">
-                PS-2026-001
+                PV-2026-6767
             </div>
 
             <p style="margin-top:8px;color:#718078;font-size:11px;">
@@ -3258,7 +3258,7 @@ footer p{
 
                 <input
                     id="petInput"
-                    value="Buddy">
+                    value="OREO">
 
             </div>
 
@@ -4451,7 +4451,7 @@ function callOwner(){
         document.getElementById("phoneInput").value;
 
     if(
-        phone.includes("XXXXX")
+        phone.includes("676767")
     ){
 
         showToast(
